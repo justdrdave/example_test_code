@@ -1,0 +1,104 @@
+# Build NodeJS Express app using Azure Pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript?view=vsts
+
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - Readme.md
+
+workspace:
+    clean: all 
+
+pool:
+  vmImage: 'Windows-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- task: CmdLine@2
+  displayName: 'npm test chrome'
+  inputs:
+    script: npm run test-chrome
+  condition: succeededOrFailed()
+
+- task: Npm@1
+  displayName: 'npm xml'
+  inputs:
+    command: custom
+    customCommand: 'run xml'
+  condition: succeededOrFailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/reports/cucumber_report.xml'
+    testRunTitle: 'Test results - Windows Chrome'
+  condition: succeededOrFailed()
+
+- task: CmdLine@2
+  displayName: 'npm test edge'
+  inputs:
+    script: npm run test-edge
+  condition: succeededOrFailed()
+
+- task: Npm@1
+  displayName: 'npm xml'
+  inputs:
+    command: custom
+    customCommand: 'run xml'
+  condition: succeededOrFailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/reports/cucumber_report.xml'
+    testRunTitle: 'Test results - Windows Edge'
+  condition: succeededOrFailed()
+
+- task: CmdLine@2
+  displayName: 'npm test ie'
+  inputs:
+    script: npm run test-ie
+  condition: succeededOrFailed()
+
+- task: Npm@1
+  displayName: 'npm xml'
+  inputs:
+    command: custom
+    customCommand: 'run xml'
+  condition: succeededOrFailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/reports/cucumber_report.xml'
+    testRunTitle: 'Test results - Windows IE'
+  condition: succeededOrFailed()
+
+- task: CmdLine@2
+  displayName: 'npm test Firefox'
+  inputs:
+    script: npm run test-firefox
+  condition: succeededOrFailed()
+
+- task: Npm@1
+  displayName: 'npm xml'
+  inputs:
+    command: custom
+    customCommand: 'run xml'
+  condition: succeededOrFailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/reports/cucumber_report.xml'
+    testRunTitle: 'Test results - Windows Firefox'
+  condition: succeededOrFailed()

@@ -1,0 +1,38 @@
+{
+  "name": "capitalontap-part1",
+  "version": "1.0.0",
+  "description": "An integration of TestCafe and CucumberJS for Demo Purpouses",
+  "author": "David Losinski",
+  "license": "ISC",
+  "scripts": {
+    "lint": "eslint",
+    "test": "cucumber-js features/ --format json:./reports/cucumber_report.json --tags \"not @Pending\"",
+    "testing": "cucumber-js features/ -f json:./reports/cucumber_report.json --tags @testing --tags \"not @Pending\"",
+    "test-chrome": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"chrome\\\"}\"",
+    "test-ie": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"ie\\\"}\"",
+    "test-edge": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"edge\\\"}\"",
+    "test-firefox": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"firefox\\\"}\"",
+    "test-opera": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"opera\\\"}\"",
+    "test-safari": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"safari\\\"}\"",
+    "testing-safari": "cucumber-js features/  --format json:./reports/cucumber_report.json --tags @testing  --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"safari\\\"}\"",
+    "test-chrome-headless": "cucumber-js features/ --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"chrome:headless\\\"}\"",
+    "test-firefox-headless": "cucumber-js features/ --format json:./reports/cucumber_report.json --tags \"not @Pending\" --world-parameters \"{\\\"browser\\\": \\\"firefox:headless\\\"}\"",
+    "xml": "node xml_report.js",
+    "report": "node html_report.js"
+  },
+  "dependencies": {
+    "base64-img": "^1.0.4",
+    "cucumber": "^6.0.5",
+    "testcafe": "^1.10.1",
+    "cucumber-html-reporter": "^5.5.0",
+    "cucumber-junit-convert": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0"
+  }
+}

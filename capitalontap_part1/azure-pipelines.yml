@@ -1,0 +1,60 @@
+# Build NodeJS Express app using Azure Pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript?view=vsts
+
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - Readme.md
+
+workspace:
+    clean: all 
+
+pool:
+  vmImage: 'Ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- task: CmdLine@2
+  displayName: 'npm test'
+  inputs:
+    script: environment=tru-qa$(qa)-app.trurating.com npm run test-qa-ci
+
+- task: Npm@1
+  displayName: 'npm xml'
+  inputs:
+    command: custom
+    customCommand: 'run xml'
+  condition: succeededOrFailed()
+
+- task: Npm@1
+  displayName: 'npm report'
+  inputs:
+    command: custom
+    customCommand: 'run report'
+  condition: succeededOrFailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/reports/cucumber_report.xml'
+    testRunTitle: 'Test results from headless Chrome on Linux'
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: report'
+  inputs:
+    PathtoPublish: reports
+    ArtifactName: reports
+  condition: succeededOrFailed()
